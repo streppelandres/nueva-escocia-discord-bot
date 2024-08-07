@@ -7,7 +7,7 @@ function consoleOutputHandler(logMessage, client) {
     const channel = client.channels.cache.get(LOG_CHANNEL_ID);
     if (!channel) return;
 
-    if (logMessage.includes('SERVER STARTED')) handleServerStarted(channel);
+    if (logMessage.includes('*** SERVER STARTED ****')) handleServerStarted(channel);
 
     if (logMessage.includes('Players connected')) {
         playersNext = true;

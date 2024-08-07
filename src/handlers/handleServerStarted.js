@@ -1,5 +1,7 @@
+const { getServerStartedEmbed } = require('../embeds/server-started-embed')
+
 function handleServerStarted(channel) {
-    channel.send('El servidor ha sido iniciado.');
+    channel.send({ embeds: [getServerStartedEmbed()] });
 }
 
 module.exports = { handleServerStarted };

@@ -36,23 +36,23 @@ class PterodactylWebSocketService {
 
         this.ws.on('message', async (data) => {
             const message = JSON.parse(data);
-            console.log('Received:', message);
-
-            if (message.event === 'jwt error') {
-                this.renewToken();
-                this.connectWebSocket();
-            }
-
-            if (message.event === 'token expiring') {
-                this.renewToken();
-            }
-
-            if (message.event === 'token expired') {
-                this.connectWebSocket();
-            }
-
-            if (message.event === 'console output') {
-                consoleOutputHandler(message.args[0], this.client);
+            switch (message.event) {
+                case 'jwt error':
+                    this.renewToken();
+                    this.connectWebSocket();
+                    break;
+                case 'token expiring':
+                    this.renewToken();
+                    break;
+                case 'token expired':
+                    this.connectWebSocket();
+                    break;
+                case 'console output':
+                    consoleOutputHandler(message.args[0], this.client);
+                    break;
+                default:
+                    if (message.event != 'stats') console.log('Received:', message);
+                    break;
             }
         });
 
