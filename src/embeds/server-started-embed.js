@@ -12,7 +12,7 @@ function getServerStartedEmbed() {
         "description": `${description}`,
         "title": "Servidor iniciado",
         "color": 65305,
-        "thumbnail": {
+        "image": {
             "url": `${thumbnail}`
         }
     }

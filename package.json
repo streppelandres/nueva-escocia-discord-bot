@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fabricio-191/valve-server-query": "^4.1.9",
     "axios": "^1.7.3",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",

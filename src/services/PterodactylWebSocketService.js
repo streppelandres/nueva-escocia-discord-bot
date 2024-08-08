@@ -48,7 +48,7 @@ class PterodactylWebSocketService {
                     this.connectWebSocket();
                     break;
                 case 'console output':
-                    consoleOutputHandler(message.args[0], this.client);
+                    await consoleOutputHandler(message.args[0], this.client);
                     break;
                 default:
                     if (message.event != 'stats') console.log('Received:', message);
