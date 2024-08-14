@@ -4,6 +4,7 @@ const PTERODACTYL_API_KEY = process.env.PTERODACTYL_API_KEY;
 const SERVER_ID = process.env.SERVER_ID;
 const PTERODACTYL_BASE_URL = process.env.PTERODACTYL_BASE_URL;
 
+// FIXME
 class PterodactylApiService {
     static async getWebSocketToken() {
         try {

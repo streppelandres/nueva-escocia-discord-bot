@@ -15,6 +15,7 @@
     "axios": "^1.7.3",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
+    "inversify": "^6.0.2",
     "ws": "^8.18.0"
   },
   "devDependencies": {

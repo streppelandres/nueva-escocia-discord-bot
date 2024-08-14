@@ -3,8 +3,7 @@ const { PterodactylApiService } = require('./PterodactylApiService');
 const { consoleOutputHandler } = require('../handlers/consoleOutputHandler');
 
 class PterodactylWebSocketService {
-    constructor(client) {
-        this.client = client;
+    constructor() {
         this.ws = null;
         this.currentToken = null;
         this.connectWebSocket();
@@ -48,7 +47,7 @@ class PterodactylWebSocketService {
                     this.connectWebSocket();
                     break;
                 case 'console output':
-                    await consoleOutputHandler(message.args[0], this.client);
+                    await consoleOutputHandler(message.args[0]);
                     break;
                 default:
                     if (message.event != 'stats') console.log('Received:', message);
@@ -77,8 +76,4 @@ class PterodactylWebSocketService {
     }
 }
 
-function initializePterodactylWebSocket(client) {
-    return new PterodactylWebSocketService(client);
-}
-
-module.exports = { initializePterodactylWebSocket };
+module.exports = { PterodactylWebSocketService };

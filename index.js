@@ -1,17 +1,11 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits } = require('discord.js');
 const { initializeBot } = require('./src/bot');
+const { servicesContainer } = require('./src/container');
 
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
-});
+const discordClient = servicesContainer.getDiscordClient();
 
-initializeBot(client);
+initializeBot(discordClient);
 
-client.login(DISCORD_TOKEN);
+discordClient.login(DISCORD_TOKEN);

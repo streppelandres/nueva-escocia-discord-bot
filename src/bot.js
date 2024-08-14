@@ -1,15 +1,8 @@
 const { Collection } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const { initializePterodactylWebSocket } = require('./services/PterodactylWebSocketService');
-const { initializeRconClient } = require('./services/RconClient');
-const { SteamClient } = require('./services/SteamClient')
 
 const ALLOWED_USERS = process.env.ALLOWED_USERS.split(',');
-const SERVER_IP = process.env.SERVER_IP;
-const SERVER_PORT = parseInt(process.env.SERVER_PORT);
-const STEAM_API_KEY = process.env.STEAM_API_KEY
-
 
 function requireUncached(module) {
     delete require.cache[require.resolve(module)];
@@ -34,17 +27,11 @@ function loadCommands(client) {
     }
 }
 
-function initializeBot(client) {
+async function initializeBot(client) {
     client.commands = new Collection();
 
-    client.once('ready', async () => {
+    client.once('ready', () => {
         console.log(`Logged in as ${client.user.tag}`);
-        
-        // FIXME: This trash
-        client.ws = initializePterodactylWebSocket(client).ws;
-        client.rcon = await initializeRconClient(SERVER_IP, SERVER_PORT);
-        client.steam = new SteamClient(STEAM_API_KEY);
-
         loadCommands(client);
     });
 
@@ -56,7 +43,7 @@ function initializeBot(client) {
         if (!command) return;
 
         if (!ALLOWED_USERS.includes(interaction.user.id)) {
-            await interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
+            await interaction.reply({ content: 'No tienes permiso para usar este comando.', ephemeral: true });
             return;
         }
 
@@ -64,7 +51,7 @@ function initializeBot(client) {
             await command.execute(client, interaction);
         } catch (error) {
             console.error(error);
-            await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+            await interaction.reply({ content: 'Hubo un error al ejecutar este comando.', ephemeral: true });
         }
     });
 }

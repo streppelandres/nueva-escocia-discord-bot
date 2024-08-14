@@ -11,7 +11,7 @@ class RconClient {
     async initialize() {
         this.server = await Server({
             ip: this.ip,
-            port: this.port,
+            port: parseInt(this.port),
             timeout: 5000
         })
     }
@@ -23,13 +23,9 @@ class RconClient {
             return response;
         } catch (error) {
             console.log(error)
+            return null;
         }
     }
 }
 
-
-async function initializeRconClient(ip, port) {
-    return new RconClient(ip, port);
-}
-
-module.exports = { initializeRconClient };
+module.exports = { RconClient };

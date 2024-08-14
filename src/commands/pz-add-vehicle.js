@@ -11,10 +11,6 @@ module.exports = {
         .addStringOption(option =>
             option.setName('vehicle')
                 .setDescription('The vehicle to spawn, example: Base.Van')
-                .setRequired(true))
-        .addStringOption(option =>
-            option.setName('value')
-                .setDescription('The experience value to add')
                 .setRequired(true)),
     async execute(client, interaction) {
         const command = `addvehicle "${interaction.options.getString('vehicle')}" "${interaction.options.getString('player')}"`;
