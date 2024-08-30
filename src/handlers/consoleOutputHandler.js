@@ -10,7 +10,7 @@ const LOG_CHANNEL_ID = CONSTANTS.LOG_CHANNEL_ID;
 async function consoleOutputHandler(logMessage) {
     const discordClient = serviceContext.getDiscordClient();
     if (!discordClient) {
-        console.error("Discord client not available yet");
+        console.log("Discord client not available yet");
         return;
     }
 

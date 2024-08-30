@@ -10,9 +10,6 @@ class PterodactylApiService {
     static async getWebSocketToken() {
         try {
             const url = `${PTERODACTYL_BASE_URL}/api/client/servers/${SERVER_ID}/websocket`;
-            console.log('########################################################')
-            console.log('websocket token get url: ', url)
-            console.log('########################################################')
             const response = await axios.get(url, {
                 headers: {
                     'Authorization': `Bearer ${PTERODACTYL_API_KEY}`,

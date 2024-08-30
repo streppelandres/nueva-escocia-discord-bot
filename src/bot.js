@@ -42,8 +42,8 @@ async function initializeBot(client) {
         try {
             await command.execute(interaction, isAdmin);
         } catch (error) {
-            console.error(error);
-            await interaction.reply({ content: error | 'Hubo un error al ejecutar este comando.', ephemeral: true });
+            console.log(error);
+            await interaction.reply('Hubo un error al ejecutar este comando.');
         }
     });
 }

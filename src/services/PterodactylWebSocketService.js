@@ -1,6 +1,7 @@
 const WebSocket = require('ws');
 const { PterodactylApiService } = require('./PterodactylApiService');
 const { consoleOutputHandler } = require('../handlers/consoleOutputHandler');
+const { statusOutputHandler } = require('../handlers/statusOutputHandler');
 const { CONSTANTS } = require('../constants');
 
 class PterodactylWebSocketService {
@@ -46,6 +47,9 @@ class PterodactylWebSocketService {
                     break;
                 case 'token expired':
                     this.connectWebSocket();
+                    break;
+                case 'status':
+                    await statusOutputHandler(message.args[0]);
                     break;
                 case 'console output':
                     await consoleOutputHandler(message.args[0]);
