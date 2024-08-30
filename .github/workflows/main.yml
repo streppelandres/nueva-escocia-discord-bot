@@ -13,15 +13,30 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install lftp
-      run: sudo apt-get install lftp
+    - name: Install lftp and zip
+      run: |
+        sudo apt-get install lftp zip
 
-    - name: Deploy files via SFTP
+    - name: Create ZIP file
+      run: |
+        zip -r bot.zip . -x ".git/*"
+
+    - name: Deploy ZIP file via SFTP
       run: |
         lftp -e "
         set sftp:auto-confirm yes
         open -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} ${{ secrets.SFTP_URL }}
-        mirror --reverse --delete --verbose ./ ./
+        put bot.zip -o ./bot.zip
+        bye
+        "
+
+    - name: Extract ZIP file on server
+      run: |
+        lftp -e "
+        set sftp:auto-confirm yes
+        open -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} ${{ secrets.SFTP_URL }}
+        !unzip -o ./bot.zip -d .
+        !rm ./bot.zip
         bye
         "
 
