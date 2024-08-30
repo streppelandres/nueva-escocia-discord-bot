@@ -1,6 +1,7 @@
 const WebSocket = require('ws');
 const { PterodactylApiService } = require('./PterodactylApiService');
 const { consoleOutputHandler } = require('../handlers/consoleOutputHandler');
+const { CONSTANTS } = require('../constants');
 
 class PterodactylWebSocketService {
     constructor() {
@@ -22,7 +23,7 @@ class PterodactylWebSocketService {
 
         this.ws = new WebSocket(wsUrl, {
             headers: {
-                'Origin': process.env.PTERODACTYL_BASE_URL,
+                'Origin': CONSTANTS.PTERODACTYL_BASE_URL,
             }
         });
 

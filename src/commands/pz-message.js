@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { serviceContext } = require('../context');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,9 +9,10 @@ module.exports = {
             option.setName('message')
                 .setDescription('The message to broadcast')
                 .setRequired(true)),
-    async execute(client, interaction) {
+    async execute(interaction, isAdmin) {
+        if (!isAdmin) throw 'You do not have permission to use this command';
         const command = `servermsg "${interaction.options.getString('message')}"`;
-        client.ws.send(JSON.stringify({ event: 'send command', args: [command] }));
+        await serviceContext.wsSendCommand(command);
         await interaction.reply(`Sending command: ${command}`);
     }
 };

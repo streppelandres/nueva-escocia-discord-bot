@@ -1,20 +1,20 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { getPlayerListEmbed, PlayerConnected } = require('../embeds/player-list-embed')
-const { servicesContainer } = require('../container');
+const { serviceContext } = require('../context');
+const { CONSTANTS } = require('../constants');
 
-const LOG_CHANNEL_ID = process.env.LOG_CHANNEL_ID; // FIXME: Esto aca medio rancio
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('pz-players')
         .setDescription('Get player list'),
-    async execute(client, interaction) {
+    async execute(client, interaction, isAdmin) {
         await interaction.deferReply();
-        const response = await servicesContainer.getRconClient().getPlayers();
+        const response = await serviceContext.getRconClient().getPlayers();
 
         if (!response) await interaction.editReply('No hay jugadores o no anda el servicio de Steam, una cagada');
 
         const players = response.map(p => new PlayerConnected(p.name, p.timeOnline.toString()));
-        const channel = await client.channels.cache.get(LOG_CHANNEL_ID);
+        const channel = await client.channels.cache.get(CONSTANTS.LOG_CHANNEL_ID);
 
         if (channel) {
             await channel.send({ embeds: [getPlayerListEmbed(players)] });

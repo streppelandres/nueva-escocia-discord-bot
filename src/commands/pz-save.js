@@ -1,11 +1,13 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { serviceContext } = require('../context');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('pz-save')
         .setDescription('Saves the current game world'),
-    async execute(client, interaction) {
-        client.ws.send(JSON.stringify({ event: 'send command', args: ['save'] }));
-        await interaction.reply(`Sending command: ${command}`);
+    async execute(interaction, isAdmin) {
+        if (!isAdmin) throw 'You do not have permission to use this command';
+        await serviceContext.wsSendCommand('save');
+        await interaction.reply('Saving the world...');
     },
 };

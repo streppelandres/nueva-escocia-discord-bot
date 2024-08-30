@@ -1,8 +1,7 @@
 const { Collection } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-
-const ALLOWED_USERS = process.env.ALLOWED_USERS.split(',');
+const { CONSTANTS } = require('./constants');
 
 function requireUncached(module) {
     delete require.cache[require.resolve(module)];
@@ -29,11 +28,7 @@ function loadCommands(client) {
 
 async function initializeBot(client) {
     client.commands = new Collection();
-
-    client.once('ready', () => {
-        console.log(`Logged in as ${client.user.tag}`);
-        loadCommands(client);
-    });
+    loadCommands(client);
 
     client.on('interactionCreate', async interaction => {
         if (!interaction.isCommand()) return;
@@ -42,16 +37,13 @@ async function initializeBot(client) {
 
         if (!command) return;
 
-        if (!ALLOWED_USERS.includes(interaction.user.id)) {
-            await interaction.reply({ content: 'No tienes permiso para usar este comando.', ephemeral: true });
-            return;
-        }
+        const isAdmin = CONSTANTS.ADMIN_USERS.includes(interaction.user.id);
 
         try {
-            await command.execute(client, interaction);
+            await command.execute(interaction, isAdmin);
         } catch (error) {
             console.error(error);
-            await interaction.reply({ content: 'Hubo un error al ejecutar este comando.', ephemeral: true });
+            await interaction.reply({ content: error | 'Hubo un error al ejecutar este comando.', ephemeral: true });
         }
     });
 }

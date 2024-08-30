@@ -1,5 +1,5 @@
 const { getPlayerConnectedEmbed } = require('../embeds/player-connected-embed');
-const { servicesContainer } = require('../container');
+const { serviceContext } = require('../context');
 
 async function handlePlayerConnected(channel, logMessage) {
     const regex = /steam-id=(\d+)\s+access=([^ ]*)\s+username="([^"]+)"/;
@@ -16,7 +16,7 @@ async function handlePlayerConnected(channel, logMessage) {
 
     console.log('Nuevo inicio de sesion: ', steamId, username, access)
 
-    const info = await servicesContainer.getSteamClient().getPlayerInfo(steamId);
+    const info = await serviceContext.getSteamClient().getPlayerInfo(steamId);
     if (!info) return; // FIXME: Enviar un jugador conectado pero sin la data de steam
 
     const { personaname, avatarfull, profileurl } = info[0];

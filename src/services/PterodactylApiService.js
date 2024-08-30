@@ -1,14 +1,19 @@
 const axios = require('axios');
+const { CONSTANTS } = require('../constants')
 
-const PTERODACTYL_API_KEY = process.env.PTERODACTYL_API_KEY;
-const SERVER_ID = process.env.SERVER_ID;
-const PTERODACTYL_BASE_URL = process.env.PTERODACTYL_BASE_URL;
+const PTERODACTYL_API_KEY = CONSTANTS.PTERODACTYL_API_KEY;
+const SERVER_ID = CONSTANTS.PTERODACTYL_SERVER_ID;
+const PTERODACTYL_BASE_URL = CONSTANTS.PTERODACTYL_BASE_URL;
 
 // FIXME
 class PterodactylApiService {
     static async getWebSocketToken() {
         try {
-            const response = await axios.get(`${PTERODACTYL_BASE_URL}/api/client/servers/${SERVER_ID}/websocket`, {
+            const url = `${PTERODACTYL_BASE_URL}/api/client/servers/${SERVER_ID}/websocket`;
+            console.log('########################################################')
+            console.log('websocket token get url: ', url)
+            console.log('########################################################')
+            const response = await axios.get(url, {
                 headers: {
                     'Authorization': `Bearer ${PTERODACTYL_API_KEY}`,
                     'Content-Type': 'application/json',
