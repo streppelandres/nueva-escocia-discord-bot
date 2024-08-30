@@ -18,7 +18,8 @@ jobs:
 
     - name: Deploy files via SFTP
       run: |
-        lftp -f "
+        lftp -e "
+        set sftp:auto-confirm yes
         open -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} ${{ secrets.SFTP_URL }}
         mirror --reverse --delete --verbose ./ ./
         bye
@@ -34,7 +35,8 @@ jobs:
         echo "SERVER_IP=${{ secrets.SERVER_IP }}" >> .env
         echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
         echo "STEAM_API_KEY=${{ secrets.STEAM_API_KEY }}" >> .env
-        lftp -f "
+        lftp -e "
+        set sftp:auto-confirm yes
         open -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} ${{ secrets.SFTP_URL }}
         put -O ./ ./.env
         bye
