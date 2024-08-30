@@ -13,35 +13,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install lftp and zip
-      run: |
-        sudo apt-get install lftp zip
+    - name: Install lftp
+      run: sudo apt-get install lftp
 
-    - name: Create ZIP file
-      run: |
-        zip -r bot.zip . -x ".git/*"
-
-    - name: Deploy ZIP file and script via SFTP
-      run: |
-        echo "#!/bin/bash" > deploy.sh
-        echo "unzip -o bot.zip -d ." >> deploy.sh
-        echo "rm bot.zip" >> deploy.sh
-        chmod +x deploy.sh
-        lftp -e "
-        set sftp:auto-confirm yes
-        open -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} ${{ secrets.SFTP_URL }}
-        put bot.zip -o ./bot.zip
-        put deploy.sh -o ./deploy.sh
-        bye
-        "
-
-    - name: Execute deploy script on server
+    - name: Deploy files via SFTP
       run: |
         lftp -e "
         set sftp:auto-confirm yes
         open -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} ${{ secrets.SFTP_URL }}
-        !bash deploy.sh
-        !rm deploy.sh
+        mirror --reverse --delete --verbose --exclude .git --only-newer ./ ./
         bye
         "
 
