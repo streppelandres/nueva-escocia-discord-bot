@@ -9,6 +9,7 @@ class RconClient {
     }
 
     async initialize() {
+        console.log(`Iniciando RconService, ip: [${this.ip}] port: [${parseInt(this.port)}]`)
         this.server = await Server({
             ip: this.ip,
             port: parseInt(this.port),

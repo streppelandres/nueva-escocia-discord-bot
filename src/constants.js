@@ -12,4 +12,6 @@ const CONSTANTS = {
     SERVER_PORT: parseInt(process.env.SERVER_PORT)
 }
 
+console.log(CONSTANTS)
+
 module.exports = { CONSTANTS }
