@@ -32,8 +32,8 @@ jobs:
         echo "PTERODACTYL_SERVER_ID=${{ secrets.PTERODACTYL_SERVER_ID }}" >> .env
         echo "PTERODACTYL_BASE_URL=${{ secrets.PTERODACTYL_BASE_URL }}" >> .env
         echo "ADMIN_USERS=${{ secrets.ADMIN_USERS }}" >> .env
-        echo "SERVER_IP=${{ secrets.SERVER_IP }}" >> .env
-        echo "SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+        echo "PZ_SERVER_IP=${{ secrets.SERVER_IP }}" >> .env
+        echo "PZ_SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
         echo "STEAM_API_KEY=${{ secrets.STEAM_API_KEY }}" >> .env
         lftp -e "
         set sftp:auto-confirm yes

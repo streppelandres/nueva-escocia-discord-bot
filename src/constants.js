@@ -8,8 +8,8 @@ const CONSTANTS = {
     PTERODACTYL_SERVER_ID: process.env.PTERODACTYL_SERVER_ID,
     PTERODACTYL_BASE_URL: process.env.PTERODACTYL_BASE_URL,
     STEAM_API_KEY: process.env.STEAM_API_KEY,
-    SERVER_IP: process.env.SERVER_IP,
-    SERVER_PORT: parseInt(process.env.SERVER_PORT)
+    SERVER_IP: process.env.PZ_SERVER_IP,
+    SERVER_PORT: parseInt(process.env.PZ_SERVER_PORT)
 }
 
 console.log(CONSTANTS)
