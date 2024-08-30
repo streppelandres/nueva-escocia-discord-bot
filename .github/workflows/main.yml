@@ -42,3 +42,12 @@ jobs:
         put -O ./ ./.env
         bye
         "
+
+    - name: Trigger server restart
+      run: |
+        curl --location "${{ secrets.DISCORD_PTERODACTYL_API_POWER_URL }}" \
+        --header 'Content-Type: application/json' \
+        --header "Authorization: Bearer ${{ secrets.DISCORD_PTERODACTYL_API_BEARER_TOKEN }}" \
+        --data '{
+          "signal": "restart"
+        }'
