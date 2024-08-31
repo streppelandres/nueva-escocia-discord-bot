@@ -20,11 +20,14 @@ module.exports = {
             console.log("Discord client not available yet");
             return;
         }
-    
-        const channel = await discordClient.channels.cache.get(CONSTANTS.LOG_CHANNEL_ID);
 
-        if (channel) {
-            await channel.send({ embeds: [getPlayerListEmbed(players)] });
+        const channelId = interaction.channelId;
+
+        if (channelId !== CONSTANTS.LOG_CHANNEL_ID) {
+            const channel = await discordClient.channels.cache.get(CONSTANTS.LOG_CHANNEL_ID);
+            if (channel) {
+                await channel.send({ embeds: [getPlayerListEmbed(players)] });
+            }
         }
 
         await interaction.editReply({ embeds: [getPlayerListEmbed(players)] });
