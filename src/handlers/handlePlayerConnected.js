@@ -20,7 +20,7 @@ async function handlePlayerConnected(channel, logMessage) {
     if (!info) return; // FIXME: Enviar un jugador conectado pero sin la data de steam
 
     const { personaname, avatarfull, profileurl } = info[0];
-    channel.send({ embeds: [getPlayerConnectedEmbed(personaname, avatarfull, profileurl, access)] });
+    channel.send({ embeds: [getPlayerConnectedEmbed(username, avatarfull, profileurl, access)] });
 }
 
 module.exports = { handlePlayerConnected };
