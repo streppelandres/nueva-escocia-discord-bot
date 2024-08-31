@@ -21,7 +21,7 @@ async function handlePlayerDisconnected(channel, logMessage) {
 
     const { personaname, avatarfull, profileurl } = info[0];
 
-    channel.send({ embeds: [getPlayerDionnectedEmbed(personaname, avatarfull, profileurl, access)] });
+    channel.send({ embeds: [getPlayerDionnectedEmbed(username, avatarfull, profileurl, access)] });
 }
 
 module.exports = { handlePlayerDisconnected };
