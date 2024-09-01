@@ -1,7 +1,7 @@
-// src/handlers/consoleOutputHandler.js
 const { handleServerStarted } = require('./handleServerStarted');
 const { handlePlayerConnected } = require('./handlePlayerConnected');
 const { handlePlayerDisconnected } = require('./handlePlayerDisconnected');
+const { handlePlayerDead } = require('./handlePlayerDead');
 const { serviceContext } = require('../context');
 const { CONSTANTS } = require('../constants');
 
@@ -20,6 +20,8 @@ async function consoleOutputHandler(logMessage) {
     if (logMessage.includes('*** SERVER STARTED ****')) handleServerStarted(channel);
     if (logMessage.includes('ConnectionManager: [fully-connected]')) await handlePlayerConnected(channel, logMessage);
     if (logMessage.includes('ConnectionManager: [disconnect] "receive-disconnect"')) await handlePlayerDisconnected(channel, logMessage);
+
+    await handlePlayerDead(channel, logMessage);
 }
 
 module.exports = { consoleOutputHandler };
