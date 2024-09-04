@@ -25,6 +25,9 @@ jobs:
         echo "STEAM_API_KEY=${{ secrets.STEAM_API_KEY }}" >> .env
         echo "LOG_CHANNEL_ID=${{ secrets.LOG_CHANNEL_ID }}" >> .env
 
+    - name: Install lftp
+      run: sudo apt-get install lftp
+
     - name: 📂 Copy files via FTP
       run: |
         lftp -e "
