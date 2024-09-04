@@ -26,20 +26,15 @@ jobs:
         echo "LOG_CHANNEL_ID=${{ secrets.LOG_CHANNEL_ID }}" >> .env
 
     - name: 📂 Copy files via FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.SFTP_URL }}
-        port: ${{ secrets.SFTP_PORT }}
-        username: ${{ secrets.SFTP_USERNAME }}
-        password: ${{ secrets.SFTP_PASSWORD }}
-        local-dir: ./
-        server-dir: ./
-        exclude: |
-          **/.git*
-          **/.npm*
-          **/node_modules*
-        dangerous-clean-slate: true
-        dry-run: false
+      run: |
+        lftp -e "
+        set sftp:auto-confirm yes
+        set net:timeout 30
+        set net:max-retries 3
+        open -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} sftp://${{ secrets.SFTP_URL }}:${{ secrets.SFTP_PORT }}
+        mirror --reverse --delete --verbose --exclude .git --exclude .npm --exclude node_modules --only-newer ./ ./
+        bye
+        "
 
     - name: 🚀 Restart Discord bot
       run: |
