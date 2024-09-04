@@ -29,6 +29,7 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.SFTP_URL }}
+        port: ${{ secrets.SFTP_PORT }}
         username: ${{ secrets.SFTP_USERNAME }}
         password: ${{ secrets.SFTP_PASSWORD }}
         local-dir: ./
