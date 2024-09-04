@@ -25,3 +25,19 @@ discordClient.once('ready', async () => {
 });
 
 discordClient.login(CONSTANTS.DISCORD_TOKEN).catch(console.error);
+
+// Prueba
+const express = require('express');
+const app = express();
+
+app.use(express.json());
+
+app.get('/api', (req, res) => {
+    res.send('Hello from API');
+});
+
+const PORT = 80;
+const server = app.listen(PORT, async () => {
+    console.log(`Server is running on port ${PORT}`);
+    console.log(server.address());
+});
