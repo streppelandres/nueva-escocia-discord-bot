@@ -3,6 +3,7 @@ const { Client, GatewayIntentBits } = require('discord.js');
 const { serviceContext } = require('./src/context');
 const { initializeBot } = require('./src/bot');
 const { initializeServices } = require('./src/services/InitializeServices');
+const { BotApi } = require('./src/api/BotApi');
 
 const discordClient = new Client({
     intents: [
@@ -11,6 +12,8 @@ const discordClient = new Client({
         GatewayIntentBits.MessageContent
     ]
 });
+
+const botApi = new BotApi();
 
 discordClient.once('ready', async () => {
     console.log(`Discord client logged in as ${discordClient.user.tag}`);
@@ -22,22 +25,12 @@ discordClient.once('ready', async () => {
     } catch (error) {
         console.error('Error initializing services:', error);
     }
+
+    try {
+        botApi.listen();
+    } catch (error) {
+        console.error('Error initializing bot api:', error);
+    }
 });
 
 discordClient.login(CONSTANTS.DISCORD_TOKEN).catch(console.error);
-
-// Prueba
-const express = require('express');
-const app = express();
-
-app.use(express.json());
-
-app.get('/api', (req, res) => {
-    res.send('Hello from API');
-});
-
-const PORT = 80;
-const server = app.listen(PORT, async () => {
-    console.log(`Server is running on port ${PORT}`);
-    console.log(server.address());
-});

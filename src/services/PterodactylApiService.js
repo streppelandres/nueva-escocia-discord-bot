@@ -5,11 +5,10 @@ const PTERODACTYL_API_KEY = CONSTANTS.PTERODACTYL_API_KEY;
 const SERVER_ID = CONSTANTS.PTERODACTYL_SERVER_ID;
 const PTERODACTYL_BASE_URL = CONSTANTS.PTERODACTYL_BASE_URL;
 
-// FIXME
 class PterodactylApiService {
-    static async getWebSocketToken() {
+    static async get(endpoint) {
         try {
-            const url = `${PTERODACTYL_BASE_URL}/api/client/servers/${SERVER_ID}/websocket`;
+            const url = `${PTERODACTYL_BASE_URL}/api/client/servers/${SERVER_ID}/${endpoint}`;
             const response = await axios.get(url, {
                 headers: {
                     'Authorization': `Bearer ${PTERODACTYL_API_KEY}`,
@@ -17,13 +16,31 @@ class PterodactylApiService {
                     'Accept': 'application/json'
                 },
             });
-            return {
-                token: response.data.data.token,
-                socket: response.data.data.socket
-            }
+            if (endpoint != 'websocket') console.log('[PterodactylApiService] Response: ', response);
+            return response;
         } catch (error) {
-            console.error('Error fetching WebSocket token:', error);
+            console.error(`[PterodactylApiService] Error fetching: [${url}]`, error);
             return null;
+        }
+    }
+
+    static async getWebSocketToken() {
+        const response = await PterodactylApiService.get('websocket');
+        return {
+            token: response.data.data.token,
+            socket: response.data.data.socket
+        }
+    }
+
+    static async getResources() {
+        const { data } = await PterodactylApiService.get('resources');
+        const { attributes } = data;
+        const currentState = attributes['current_state'];
+        const { memory_bytes, cpu_absolute, disk_bytes, network_rx_bytes, network_tx_bytes, uptime } = attributes['resources'];
+        return {
+            isRunning: currentState == 'running',
+            uptime: uptime,
+            currentState: currentState,
         }
     }
 }
