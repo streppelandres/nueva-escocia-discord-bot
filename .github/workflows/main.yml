@@ -1,4 +1,4 @@
-name: Deploy Bot to Pterodactyl Server
+name: 🤖 Deploy Bot to Pterodactyl Server
 
 on:
   push:
@@ -11,37 +11,38 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Install lftp
-      run: sudo apt-get install lftp
-
-    - name: Deploy files via SFTP
-      run: |
-        lftp -e "
-        set sftp:auto-confirm yes
-        open -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} ${{ secrets.SFTP_URL }}
-        mirror --reverse --delete --verbose --exclude .git --exclude .npm --exclude node_modules --only-newer ./ ./
-        bye
-        "
-    - name: Create .env file on server
+    - name:  🔒 Create .env file
       run: |
         echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" > .env
         echo "PTERODACTYL_API_KEY=${{ secrets.PTERODACTYL_API_KEY }}" >> .env
         echo "PTERODACTYL_SERVER_ID=${{ secrets.PTERODACTYL_SERVER_ID }}" >> .env
         echo "PTERODACTYL_BASE_URL=${{ secrets.PTERODACTYL_BASE_URL }}" >> .env
         echo "ADMIN_USERS=${{ secrets.ADMIN_USERS }}" >> .env
-        echo "PZ_SERVER_IP=${{ secrets.SERVER_IP }}" >> .env
-        echo "PZ_SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
+        echo "PZ_SERVER_IP=${{ secrets.PZ_SERVER_IP }}" >> .env
+        echo "PZ_SERVER_PORT=${{ secrets.PZ_SERVER_PORT }}" >> .env
         echo "STEAM_API_KEY=${{ secrets.STEAM_API_KEY }}" >> .env
         echo "LOG_CHANNEL_ID=${{ secrets.LOG_CHANNEL_ID }}" >> .env
-        lftp -e "
-        set sftp:auto-confirm yes
-        open -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} ${{ secrets.SFTP_URL }}
-        put -O ./ ./.env
-        bye
-        "
-    - name: Trigger server restart
+        echo "BOT_API_KEY=${{ secrets.BOT_API_KEY }}" >> .env
+        echo "BOT_API_PORT=${{ secrets.BOT_API_PORT }}" >> .env
+      
+    - name: 📂 Copy files via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ secrets.SFTP_URL }}
+        username: ${{ secrets.SFTP_USERNAME }}
+        password: ${{ secrets.SFTP_PASSWORD }}
+        local-dir: ./
+        server-dir: ./
+        exclude: |
+          **/.git*
+          **/.npm*
+          **/node_modules*
+        dangerous-clean-slate: true
+        dry-run: false
+
+    - name: 🚀 Restart Discord bot
       run: |
         curl --location "${{ secrets.DISCORD_PTERODACTYL_API_POWER_URL }}" \
         --header 'Content-Type: application/json' \
