@@ -35,6 +35,8 @@ jobs:
         echo "PZ_SERVER_PORT=${{ secrets.SERVER_PORT }}" >> .env
         echo "STEAM_API_KEY=${{ secrets.STEAM_API_KEY }}" >> .env
         echo "LOG_CHANNEL_ID=${{ secrets.LOG_CHANNEL_ID }}" >> .env
+        echo "BOT_API_KEY=${{ secrets.BOT_API_KEY }}" >> .env
+        echo "BOT_API_PORT=${{ secrets.BOT_API_PORT }}" >> .env
         lftp -e "
         set sftp:auto-confirm yes
         open -u ${{ secrets.SFTP_USERNAME }},${{ secrets.SFTP_PASSWORD }} ${{ secrets.SFTP_URL }}
